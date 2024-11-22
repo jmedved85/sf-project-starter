@@ -1,0 +1,77 @@
+Docker build for DEV
+--------------------
+
+# Build and start the containers
+docker compose up -d --build
+
+# Restart container
+docker restart <container_id>
+
+# Check the status of the containers
+docker compose ps
+
+# Access the application at http://localhost:8090
+
+# Check logs for the Nginx container (optional)
+docker logs nginx-sf_project_starter
+
+# Follow logs in real-time (optional)
+docker logs -f nginx-sf_project_starter
+
+# Stop and remove the containers, networks, and volumes
+docker compose down
+
+# Start the containers without build
+docker compose up -d
+
+- php-sf_project_starter container
+docker exec -it php-sf_project_starter /bin/bash
+cat /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+- nginx-sf_project_starter container
+docker exec -it nginx-sf_project_starter /bin/bash
+
+
+MySQL
+-----
+MYSQL_ROOT_PASSWORD: pass1234
+MYSQL_USER: root
+
+
+XDEBUG
+------
+- if debugger does not work:
+
+docker/php/xdebug.ini
+- in this file you have to set IP address of local computer OS
+xdebug.client_host=192.168.1.1
+
+- search under "eno1":
+ip addr show 
+
+- auto host
+xdebug.client_host=host.docker.internal
+
+- disable firewall for 9003
+sudo ufw status
+sudo ufw allow 9003
+sudo ufw reload
+
+VSCODE
+------
+// Docker Setup
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Listen for Xdebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9003,
+      "pathMappings": {
+        "/var/www/html": "${workspaceFolder}"
+      },
+      "log": true
+    }
+  ]
+}

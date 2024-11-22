@@ -1,0 +1,189 @@
+NOTES:
+
+- Install PHP 8.3 or higher and these PHP extensions (which are installed and enabled by default in most PHP 8 installations): Ctype, iconv, PCRE, Session, SimpleXML, and Tokenizer;
+
+- Install Composer, which is used to install PHP packages.
+
+- Symfony CLI
+curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | sudo -E bash
+sudo apt install symfony-cli
+
+symfony check:requirements
+
+- traditional web app
+symfony new sf-project-starter --version="6.4.*" --webapp
+symfony new sf-project-starter --version=lts --webapp
+
+- microservice, console application or API:
+symfony new my_project_directory --version="6.4.*"
+
+- displays information about the project
+bin/console about
+
+- symfony server -
+symfony server:start
+symfony server:start -d
+
+- check whether a project's dependencies contain any known security vulnerability
+symfony check:security
+
+- command that checks security vulnerabilities in the dependencies of the app
+bin/console importmap:audit
+
+
+.env.local
+------------
+
+The issue seems to be with the `DATABASE_URL` configuration in your .env.local file. Since your MySQL container is running and mapped to port `3310` on the host, you should use the container name `mysql-sf_project_starter` instead of `127.0.0.1` to connect from within another container.
+
+This change ensures that the Symfony application running in the `php-sf_project_starter` container can connect to the MySQL database using the Docker network.
+
+DATABASE_URL=mysql://root:pass1234@mysql-sf_project_starter:3306/sf-project-starter_dev
+APP_ENV=dev
+APP_DEBUG=true
+
+
+----------
+MAKE ENTITY
+-----------
+bin/console make:entity
+sh entity-make.sh
+
+-------------
+MAKE DATABASE
+-------------
+bin/console doctrine:database:create
+docker compose exec php bin/console doctrine:database:create
+
+MIGRATIONS
+----------
+bin/console doctrine:migrations:diff
+sh diff-migrations.sh
+
+bin/console doctrine:migrations:migrate
+sh migrations-migrate.sh
+
+bin/console make:migration
+docker compose exec php bin/console make:migration
+
+bin/console doctrine:schema:validate
+docker compose exec php bin/console doctrine:schema:validate
+
+- list all migrations
+bin/console doctrine:migrations:list
+docker compose exec php bin/console doctrine:migrations:list
+
+- revert of migration
+bin/console doctrine:migrations:execute 'DoctrineMigrations\Version' --down
+docker compose exec php bin/console doctrine:migrations:execute 'DoctrineMigrations\Version' --down
+
+bin/console doctrine:migrations:execute 'DoctrineMigrations\Version' --up
+docker compose exec php bin/console doctrine:migrations:execute 'DoctrineMigrations\Version' --up
+
+- fixtures
+bin/console doctrine:fixtures:load
+docker compose exec php bin/console doctrine:fixtures:load
+
+vendor/bin/doctrine orm:schema-tool:update --dump-sql
+vendor/bin/doctrine orm:schema-tool:update --force
+
+
+USER ADMIN-DEV
+
+- set hashed password
+bin/console security:hash-password
+docker compose exec php bin/console security:hash-password
+
+
+SECURITY
+--------
+https://symfony.com/doc/6.4/security.html
+
+php bin/console make:user
+docker compose exec php bin/console make:user
+
+php bin/console make:migration
+docker compose exec php bin/console make:migration
+
+php bin/console doctrine:migrations:migrate
+sh migrations-migrate.sh
+
+- You can also manually hash a password by running:
+php bin/console security:hash-password
+
+- registration
+composer require symfonycasts/verify-email-bundle
+php bin/console make:registration-form
+docker compose exec php bin/console make:registration-form
+
+- login
+php bin/console make:security:form-login
+docker compose exec php bin/console make:security:form-login
+
+php bin/console make:controller Login
+docker compose exec php bin/console make:controller Login
+
+- limiting login attempts
+composer require symfony/rate-limiter
+
+
+
+ASSETS
+------
+- styles/custom.css
+- app.js (if using importmap)
+
+composer require symfony/asset-mapper
+
+bin/console cache:clear
+sh clear-cache.sh
+
+bin/console assets:install
+docker compose exec php bin/console assets:install
+
+bin/console debug:asset-map
+docker compose exec php bin/console debug:asset-map
+
+bin/console asset-map:compile
+sh asset-map-compile.sh
+
+
+PHP-STAN
+--------
+composer require --dev phpstan/phpstan
+vendor/bin/phpstan analyze --memory-limit=1G
+
+
+CODESNIFFER
+-----------
+composer require --dev squizlabs/php_codesniffer
+
+vendor/bin/phpcs src
+vendor/bin/phpcbf src
+
+
+DOCKER
+------
+sh up.sh
+sh down.sh
+sh asset-map-compile.sh
+sh clear-cache.sh
+sh diff-migrations.sh
+sh entity-make.sh
+sh migrations-migrate.sh
+
+- IMPORTANT!!!
+- use 'docker compose exec php' in front of the 'bin/console' command if app is running in docker
+
+docker compose exec php bin/console cache:clear
+docker compose exec php bin/console make:entity
+docker compose exec php bin/console doctrine:migrations:diff
+docker compose exec php bin/console doctrine:migrations:migrate
+docker compose exec php bin/console asset-map:compile
+
+- mkdir uploads/documents permission
+chmod 777 /home/jezz/projects/exawiki/public/uploads
+chmod 777 /home/jezz/projects/exawiki/public/uploads/documents
+
+- change permissions
+sudo chown user:user security.yaml 
