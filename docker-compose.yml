@@ -7,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: pass1234
       # MYSQL_USER: root
     ports:
-      - "3310:3306"
+      - "3311:3306"
     volumes:
       - mysql-data:/var/lib/mysql
 
