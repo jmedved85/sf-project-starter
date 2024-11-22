@@ -1,0 +1,3 @@
+ - starter for symfony based full stack web-app projects - php, twig, mysql, bootstrap
+ - basic security system
+ - dockerized dev platform
