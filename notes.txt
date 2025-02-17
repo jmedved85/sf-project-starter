@@ -154,6 +154,14 @@ composer require --dev phpstan/phpstan
 vendor/bin/phpstan analyze --memory-limit=1G
 
 
+------------
+PHP-CS-Fixer
+------------
+composer require cs-fixer-shim
+./vendor/bin/php-cs-fixer
+./vendor/bin/php-cs-fixer fix
+
+
 CODESNIFFER
 -----------
 composer require --dev squizlabs/php_codesniffer
