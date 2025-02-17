@@ -1,3 +1,4 @@
+--------------------
 Docker build for DEV
 --------------------
 
@@ -32,12 +33,14 @@ cat /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 docker exec -it nginx-sf_project_starter /bin/bash
 
 
+-----
 MySQL
 -----
 MYSQL_ROOT_PASSWORD: pass1234
 MYSQL_USER: root
 
 
+------
 XDEBUG
 ------
 - if debugger does not work:
@@ -46,7 +49,7 @@ docker/php/xdebug.ini
 - in this file you have to set IP address of local computer OS
 xdebug.client_host=192.168.1.1
 
-- search under "eno1":
+- search under "eno1" and copy IP addres of local computer:
 ip addr show 
 
 - auto host

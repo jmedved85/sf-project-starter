@@ -11,11 +11,10 @@ sudo apt install symfony-cli
 symfony check:requirements
 
 - traditional web app
-symfony new sf-project-starter --version="6.4.*" --webapp
-symfony new sf-project-starter --version=lts --webapp
+symfony new sf-project-starter --webapp
 
 - microservice, console application or API:
-symfony new my_project_directory --version="6.4.*"
+symfony new my_project_directory
 
 - displays information about the project
 bin/console about
@@ -31,6 +30,7 @@ symfony check:security
 bin/console importmap:audit
 
 
+------------
 .env.local
 ------------
 
@@ -49,12 +49,15 @@ MAKE ENTITY
 bin/console make:entity
 sh entity-make.sh
 
+
 -------------
 MAKE DATABASE
 -------------
 bin/console doctrine:database:create
 docker compose exec php bin/console doctrine:database:create
 
+
+----------
 MIGRATIONS
 ----------
 bin/console doctrine:migrations:diff
@@ -88,13 +91,7 @@ vendor/bin/doctrine orm:schema-tool:update --dump-sql
 vendor/bin/doctrine orm:schema-tool:update --force
 
 
-USER ADMIN-DEV
-
-- set hashed password
-bin/console security:hash-password
-docker compose exec php bin/console security:hash-password
-
-
+--------
 SECURITY
 --------
 https://symfony.com/doc/6.4/security.html
@@ -126,8 +123,12 @@ docker compose exec php bin/console make:controller Login
 - limiting login attempts
 composer require symfony/rate-limiter
 
+- set hashed password
+bin/console security:hash-password
+docker compose exec php bin/console security:hash-password
 
 
+------
 ASSETS
 ------
 - styles/custom.css
@@ -148,10 +149,12 @@ bin/console asset-map:compile
 sh asset-map-compile.sh
 
 
+--------
 PHP-STAN
 --------
 composer require --dev phpstan/phpstan
 vendor/bin/phpstan analyze --memory-limit=1G
+sh phpstan.sh
 
 
 ------------
@@ -162,6 +165,7 @@ composer require cs-fixer-shim
 ./vendor/bin/php-cs-fixer fix
 
 
+-----------
 CODESNIFFER
 -----------
 composer require --dev squizlabs/php_codesniffer
@@ -170,6 +174,7 @@ vendor/bin/phpcs src
 vendor/bin/phpcbf src
 
 
+------
 DOCKER
 ------
 sh up.sh
@@ -179,6 +184,10 @@ sh clear-cache.sh
 sh diff-migrations.sh
 sh entity-make.sh
 sh migrations-migrate.sh
+sh router-debug.sh
+sh lint-twig.sh
+sh phpstan.sh
+sh fix.sh
 
 - IMPORTANT!!!
 - use 'docker compose exec php' in front of the 'bin/console' command if app is running in docker
@@ -190,8 +199,51 @@ docker compose exec php bin/console doctrine:migrations:migrate
 docker compose exec php bin/console asset-map:compile
 
 - mkdir uploads/documents permission
-chmod 777 /home/jezz/projects/exawiki/public/uploads
-chmod 777 /home/jezz/projects/exawiki/public/uploads/documents
+chmod 777 /home/user/directory/project/anotherdir
 
 - change permissions
-sudo chown user:user security.yaml 
+sudo chown user:user security.yaml
+
+
+--------------
+APP PRODUCTION
+--------------
+- clear cache
+php bin/console cache:clear --env=prod --no-debug
+
+For a production Symfony application, there are several additional commands you might want to use to optimize the performance and ensure everything runs smoothly:
+
+- Warm up the cache: After clearing the cache, you can warm it up to improve the application’s initial response time:
+php bin/console cache:warmup --env=prod --no-debug
+
+- Optimize the autoloader: Symfony's autoloader can be optimized for production to reduce the overhead of autoloading classes:
+composer install --no-dev --optimize-autoloader --prefer-dist
+
+- Generate a production-ready container: This command compiles the service container into a highly optimized form for production, improving performance:
+php bin/console cache:clear --env=prod --no-debug
+
+- Run migrations: Ensure your database schema is up to date by running any pending migrations:
+php bin/console doctrine:migrations:migrate --env=prod --no-interaction
+
+- Clear Doctrine metadata cache: To ensure that the Doctrine ORM's metadata is up-to-date and optimized:
+php bin/console doctrine:cache:clear-metadata --env=prod
+
+- Clear query cache: Clear the query cache to avoid outdated or inefficient queries being executed:
+php bin/console doctrine:cache:clear-query --env=prod
+
+- Clear result cache: Clear the result cache to remove any cached results of database queries:
+php bin/console doctrine:cache:clear-result --env=prod
+
+- Warm up assets: In production, assets like CSS and JavaScript files should be compiled and optimized.
+php bin/console assets:install --env=prod
+
+- Compile assets
+php bin/console asset-map:compile --env=prod
+
+- Check the Symfony health status: It's good practice to monitor your application’s status. Symfony's health check can give you useful insights:
+php bin/console server:status
+
+- Enable Profiler in production (optional): Although it’s not recommended for production, if you need to enable the profiler for debugging, you can do so:
+php bin/console debug:router --env=prod
+
+These commands will help ensure that your Symfony application is optimized, the environment is correctly configured, and the application runs efficiently in production.
