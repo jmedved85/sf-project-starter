@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'app_title'|trans }} - {{ 'login'|trans }}{% endblock %}
 
-{% block body %}
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="col-md-6">
-            <form action="{{ path('app_login') }}" method="post" class="card p-4 shadow-sm">
+{% block content %}
+    <div id="login-template" class="d-flex justify-content-center align-items-center">
+        <div class="col-md-6 col-lg-4">
+        {# <img src="#" alt="logo" class="img-fluid rounded mx-auto d-block mb-4 logo"> #}
+
+            <h1 class="display-6 text-center mb-5">{{ 'app_title'|trans }}</h1>
+            <form id="login-form" action="{{ path('app_login') }}" method="post" class="card p-4 shadow-sm">
                 {% for label, messages in app.flashes %}
                     {% for message in messages %}
                         <div class="alert alert-{{ label }}">
@@ -22,14 +25,15 @@
 
                 {% if app.user %}
                     <div class="mb-3">
-                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                        {{ 'logged_in_as'|trans({'%userIdentifier%': app.user.userIdentifier}) }},
+                        <a href="{{ path('app_logout') }}">{{ 'logout'|trans }}</a>
                     </div>
                 {% endif %}
 
-                <h1 class="h3 mb-3 font-weight-normal text-center">Please sign in</h1>
+                <h1 class="h4 mb-3 font-weight-normal text-center">{{ 'sign_in_please'|trans }}</h1>
 
                 <div class="form-group mb-3">
-                    <label for="username">Email</label>
+                    <label for="username">{{ 'email'|trans }}</label>
                     <input type="email" 
                         id="username" 
                         name="_username" 
@@ -42,7 +46,7 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="password">Password</label>
+                    <label for="password">{{ 'password'|trans }}</label>
                     <input type="password" 
                         id="password" 
                         name="_password" 
@@ -57,13 +61,13 @@
                 {# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
                 See https://symfony.com/doc/current/security/remember_me.html #}
 
-                <div class="form-check form-switch pb-2">
+                {# <div class="form-check form-switch pb-2">
                     <input type="checkbox" name="_remember_me" id="_remember_me" class="form-check-input">
-                    <label for="_remember_me" class="form-check-label">Remember me</label>
-                </div>
+                    <label for="_remember_me" class="form-check-label">{{ 'remember_me'|trans }}</label>
+                </div> #}
 
-                <button class="btn btn-lg btn-primary w-100" type="submit">
-                    Sign in
+                <button id="login-submit" class="btn btn-lg btn-primary w-100" type="submit">
+                    {{ 'sign_in'|trans }}
                 </button>
             </form>
         </div>

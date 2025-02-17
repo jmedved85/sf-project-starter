@@ -1,29 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ isEdit ? 'user_edit'|trans : 'register_title'|trans }}{% endblock %}
 
-{% block body %}
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="col-md-6">
-            {{ form_start(registrationForm, { 'attr': { 'class': 'card p-4 shadow-sm' } }) }}
-                <h1 class="h3 mb-3 font-weight-normal text-center">Register</h1>
+{% block content %}
+    <div id="register-template" class="d-flex justify-content-center align-items-center">
+         <div class="col-md-8 col-lg-5">
+            {{ form_start(registrationForm, { 'attr': { 'id': 'register-form', 'class': 'card p-4 shadow-sm' } }) }}
+                <h3 class="mb-3 font-weight-normal text-center">
+                    {{ isEdit ? 'user_edit'|trans : 'register_user'|trans }}
+                </h3>
 
                 {{ form_errors(registrationForm) }}
 
-                {{ form_row(registrationForm.firstName, { 'label': 'First Name' }) }}
-                {{ form_row(registrationForm.lastName, { 'label': 'Last Name' }) }}
-                {{ form_row(registrationForm.email, { 'label': 'Email' }) }}
-                {{ form_row(registrationForm.plainPassword, { 'label': 'Password' }) }}
+                {{ form_row(registrationForm.firstName) }}
+                {{ form_row(registrationForm.lastName) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.plainPassword) }}
+                {{ form_row(registrationForm.roles) }}
 
-                {# Active field is not required, so we can remove it from the form #}
-                {# User is automatically active when they register #}
-                {# <div class="form-check form-switch ps-3 pb-2">
-                    {{ form_widget(registrationForm.active) }}
-                    {{ form_label(registrationForm.active) }}
-                    {{ form_errors(registrationForm.active) }}
-                </div> #}
+                <button type="submit" class="btn btn btn-primary">
+                    {{ isEdit ? 'save'|trans : 'register'|trans }}
+                </button>
 
-                <button type="submit" class="btn btn-lg btn-primary w-100">Register</button>
+                <a href="{{ path('app_user_list') }}" class="btn btn-secondary btn mt-2">
+                    {{ 'go_back'|trans }}
+                </a>
             {{ form_end(registrationForm) }}
         </div>
     </div>
