@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'error.401.title'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-12 text-center">
+        <h1>{{ 'error.401.title'|trans }}</h1>
+        <p>
+            {{ 'error.401.message'|trans({'%login%': path('app_login'), '%homepage%': path('app_home')})|raw }}
+        </p>
+    </div>
+{% endblock %}
