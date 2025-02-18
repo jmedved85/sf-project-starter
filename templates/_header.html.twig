@@ -22,6 +22,12 @@
                 <ul class="navbar-nav ms-auto">
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
+                            <a class="nav-link nav-link-text-color {% if app.request.attributes.get('_route') == 'app_admin' %}active{% endif %}"
+                                href="{{ path('app_admin') }}">
+                                {{ 'admin_dashboard'|trans }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link nav-link-text-color {% if app.request.attributes.get('_route') == 'app_user_list' %}active{% endif %}"
                                 href="{{ path('app_user_list') }}">{{ 'admin_user_management'|trans }}
                             </a>
