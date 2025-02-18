@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'user_edit'|trans }}{% endblock %}
+
+{% block content %}
+    <div id="user-edit-template" class="d-flex justify-content-center align-items-center">
+        <div class="col-md-6 col-lg-4">
+            {{ form_start(form, { 'attr': { 'id': 'user-edit-form', 'class': 'card p-4 shadow-sm' } }) }}
+                <h1 class="h3 mb-3 font-weight-normal text-center">{{ 'user_edit'|trans }}</h1>
+
+                {{ form_errors(form) }}
+
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.plainPassword) }}
+                {{ form_row(form.roles) }}
+
+                <button type="submit" class="btn btn-lg btn-primary">{{ 'submit'|trans }}</button>
+                <a href="{{ path('app_user_list') }}" class="btn btn-lg btn-secondary btn mt-2">
+                    {{ 'go_back'|trans }}
+                </a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

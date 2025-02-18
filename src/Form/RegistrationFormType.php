@@ -63,7 +63,7 @@ class RegistrationFormType extends AbstractType
                 'label' => $this->translator->trans('user_type'),
                 'choices' => [
                     'Administrator' => 'ROLE_ADMIN',
-                    'Report' => 'ROLE_REPORT',
+                    'User' => 'ROLE_USER',
                 ],
                 'multiple' => true,
                 'expanded' => false,
