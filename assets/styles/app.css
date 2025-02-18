@@ -5,3 +5,24 @@ body {
 .form-check-input {
     cursor: pointer;
 }
+
+.nav-link-text-color {
+    color: lightblue;
+}
+
+.navbar-brand:hover {
+    color: rgb(255, 255, 255, 0.75) !important;
+}
+
+.navbar-brand.active {
+    color: #fff !important;
+}
+
+.logout-username-text {
+    color: orange;
+    font-weight: bold;
+}
+
+.border-color-inherit {
+    border-color: inherit;
+}
