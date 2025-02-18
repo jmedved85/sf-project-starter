@@ -30,19 +30,6 @@ symfony check:security
 bin/console importmap:audit
 
 
-------------
-.env.local
-------------
-
-The issue seems to be with the `DATABASE_URL` configuration in your .env.local file. Since your MySQL container is running and mapped to port `3310` on the host, you should use the container name `mysql-sf_project_starter` instead of `127.0.0.1` to connect from within another container.
-
-This change ensures that the Symfony application running in the `php-sf_project_starter` container can connect to the MySQL database using the Docker network.
-
-DATABASE_URL=mysql://root:pass1234@mysql-sf_project_starter:3306/sf-project-starter_dev
-APP_ENV=dev
-APP_DEBUG=true
-
-
 ----------
 MAKE ENTITY
 -----------
@@ -126,6 +113,32 @@ composer require symfony/rate-limiter
 - set hashed password
 bin/console security:hash-password
 docker compose exec php bin/console security:hash-password
+
+
+-----------
+.env.local
+-----------
+DATABASE_URL=mysql://root:pass1234@mysql-sf_project_starter:3306/sf-project-starter_dev
+APP_ENV=dev
+APP_DEBUG=true
+
+
+------------------
+DEFAULT ADMIN USER
+------------------
+username: admin@net.com
+password: admin1234
+
+INSERT INTO `sf-project-starter_dev`.`user` (`id`, `email`, `user_name`, `password`, `roles`, `first_name`, `last_name`, `active`) VALUES (1, 'admin@net.com', 'admin', '$2y$13$woWveCWpnhEiWPirdbvZu.nBRaKujD07uaFiJhkI/eEtQs5z9S36e', '["ROLE_ADMIN"]', 'Admin', 'User', 1);
+
+
+------------------
+DEFAULT USER
+------------------
+username: user@net.com
+password: user1234
+
+INSERT INTO `sf-project-starter_dev`.`user` (`id`, `email`, `user_name`, `password`, `roles`, `first_name`, `last_name`, `active`) VALUES (2, 'user@net.com', 'user', '$2y$13$Yfbvi3rzhcRV4Y3Adw4q3ekiq4R01p0n.tEIpwK7ls7bdVivmHu4e', '["ROLE_USER"]', 'Joe', 'Doe', 1);
 
 
 ------
