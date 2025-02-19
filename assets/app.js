@@ -7,6 +7,7 @@
 
 import './styles/app.css';
 // import './bootstrap.js';
+import './confirmation-modal.js';
 import './login.js';
 import './register.js';
 
