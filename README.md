@@ -93,7 +93,6 @@ Ensure you have the following installed on your machine:
 ## Running Tests
 
 To run the tests, use the following command:
-
     ```bash
     docker compose exec php ./vendor/bin/phpunit
     ```
