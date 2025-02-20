@@ -83,6 +83,7 @@ Ensure you have the following installed on your machine:
     ```
 
 6. Run:
+
     ```bash
     composer install
     sh asset-map-compile.sh
@@ -93,8 +94,9 @@ Ensure you have the following installed on your machine:
 ## Running Tests
 
 To run the tests, use the following command:
+
     ```bash
-    docker compose exec php ./vendor/bin/phpunit
+    ./vendor/bin/phpunit
     ```
 
 ## Notes
