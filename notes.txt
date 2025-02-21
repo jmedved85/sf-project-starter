@@ -218,6 +218,17 @@ chmod 777 /home/user/directory/project/anotherdir
 sudo chown user:user security.yaml
 
 
+-----
+TESTS
+-----
+- execute query on the server which is included in '/database/sf-project-starter_test.sql'
+
+./vendor/bin/phpunit
+
+- docker env
+docker compose exec php ./vendor/bin/phpunit
+
+
 --------------
 APP PRODUCTION
 --------------
