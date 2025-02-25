@@ -6,10 +6,16 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase
 {
+    private $client;
+
+    protected function setUp(): void
+    {
+        $this->client = static::createClient();
+    }
+
     public function testLogin()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $this->client->request('GET', '/login');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Sf Project Starter');
@@ -18,36 +24,34 @@ class SecurityControllerTest extends WebTestCase
 
     public function testLoginWithError()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $this->client->request('GET', '/login');
 
         $form = $crawler->filter('form#login-form')->form([
             '_username' => 'invalid_user',
             '_password' => 'invalid_password',
         ]);
 
-        $client->submit($form);
+        $this->client->submit($form);
 
         $this->assertResponseStatusCodeSame(302); // Expecting a redirect to the login page
-        $client->followRedirect();
+        $this->client->followRedirect();
 
         $this->assertSelectorExists('.alert-danger');
     }
 
     public function testLoginWithCorrectCredentials()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $this->client->request('GET', '/login');
 
         $form = $crawler->filter('form#login-form')->form([
             '_username' => 'admin@net.com', // Use the correct username
             '_password' => 'admin1234', // Use the correct password
         ]);
 
-        $client->submit($form);
+        $this->client->submit($form);
 
         $this->assertResponseStatusCodeSame(302); // Expecting a redirect after successful login
-        $client->followRedirect();
+        $this->client->followRedirect();
 
         $this->assertSelectorNotExists('.alert-danger'); // Ensure no error message is displayed
         $this->assertSelectorExists('a[href="/logout"]'); // Ensure the logout link is present
@@ -55,8 +59,7 @@ class SecurityControllerTest extends WebTestCase
 
     public function testLogout()
     {
-        $client = static::createClient();
-        $client->request('GET', '/logout');
+        $this->client->request('GET', '/logout');
 
         $this->assertResponseStatusCodeSame(302); // Assuming logout redirects
     }
