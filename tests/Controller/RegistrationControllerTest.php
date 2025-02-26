@@ -2,9 +2,9 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RegistrationControllerTest extends WebTestCase
 {
@@ -110,25 +110,23 @@ class RegistrationControllerTest extends WebTestCase
     protected function tearDown(): void
     {
         // Clean up the database by removing the test records
-        if ($this->entityManager) {
-            $userRepository = $this->entityManager->getRepository(User::class);
+        $userRepository = $this->entityManager->getRepository(User::class);
 
-            // Remove the user created in testRegisterUser
-            $user = $userRepository->findOneBy(['email' => 'john.doe@example.com']);
-            if ($user) {
-                $this->entityManager->remove($user);
-            }
-
-            // Remove the user created in testEditUser
-            $user = $userRepository->findOneBy(['email' => 'jane.smith@example.com']);
-            if ($user) {
-                $this->entityManager->remove($user);
-            }
-
-            $this->entityManager->flush();
-
-            $this->entityManager->close();
+        // Remove the user created in testRegisterUser
+        $user = $userRepository->findOneBy(['email' => 'john.doe@example.com']);
+        if ($user) {
+            $this->entityManager->remove($user);
         }
+
+        // Remove the user created in testEditUser
+        $user = $userRepository->findOneBy(['email' => 'jane.smith@example.com']);
+        if ($user) {
+            $this->entityManager->remove($user);
+        }
+
+        $this->entityManager->flush();
+
+        $this->entityManager->close();
 
         parent::tearDown();
     }
