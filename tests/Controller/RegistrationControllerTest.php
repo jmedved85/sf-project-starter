@@ -62,50 +62,51 @@ class RegistrationControllerTest extends WebTestCase
         $this->assertEquals('Doe', $user->getLastName());
     }
 
-    // public function testEditUser()
-    // {
-    //     $this->logIn();
+    public function testEditUser()
+    {
+        $this->logIn();
 
-    //     // Create a user to edit
-    //     $user = new User();
-    //     $user->setFirstName('John');
-    //     $user->setLastName('Doe');
-    //     $user->setEmail('jane.doe@example.com');
-    //     $user->setPassword('password123');
-    //     $user->setRoles(['ROLE_USER']);
-    //     $user->setActive(true);
+        // Create a user to edit
+        $user = new User();
+        $user->setFirstName('John');
+        $user->setLastName('Doe');
+        $user->setEmail('jane.doe@example.com');
+        $user->setPassword('password123');
+        $user->setRoles(['ROLE_USER']);
+        $user->setActive(true);
 
-    //     $this->entityManager->persist($user);
-    //     $this->entityManager->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
-    //     $crawler = $this->client->request('GET', '/admin/user/edit/' . $user->getId());
+        $crawler = $this->client->request('GET', '/admin/user/edit/' . $user->getId());
 
-    //     $this->assertResponseIsSuccessful();
-    //     $this->assertSelectorExists('form#register-form');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('form#register-form');
 
-    //     $form = $crawler->selectButton('register')->form([
-    //         'registration_form[firstName]' => 'Jane',
-    //         'registration_form[lastName]' => 'Smith',
-    //         'registration_form[email]' => 'jane.smith@example.com',
-    //         'registration_form[plainPassword]' => 'newpassword123',
-    //         'registration_form[roles]' => ['ROLE_ADMIN'],
-    //     ]);
+        $form = $crawler->selectButton('Save')->form([
+            'registration_form[firstName]' => 'Jane',
+            'registration_form[lastName]' => 'Smith',
+            'registration_form[email]' => 'jane.smith@example.com',
+        ]);
 
-    //     $this->client->submit($form);
+        $this->client->submit($form);
 
-    //     $this->assertResponseStatusCodeSame(302); // Expecting a redirect after successful edit
-    //     $this->client->followRedirect();
+        $this->entityManager->flush();
+        $this->assertResponseStatusCodeSame(302); // Expecting a redirect after successful edit
+        $this->client->followRedirect();
 
-    //     $this->assertSelectorExists('.alert-success'); // Ensure success message is displayed
+        $this->assertSelectorExists('.alert-success'); // Ensure success message is displayed
 
-    //     // Verify the user was updated in the database
-    //     $updatedUser = $this->entityManager->getRepository(User::class)->find($user->getId());
-    //     $this->assertNotNull($updatedUser);
-    //     $this->assertEquals('Jane', $updatedUser->getFirstName());
-    //     $this->assertEquals('Smith', $updatedUser->getLastName());
-    //     $this->assertEquals('jane.smith@example.com', $updatedUser->getEmail());
-    //     $this->assertEquals(['ROLE_ADMIN'], $updatedUser->getRoles());
-    // }
+        // Verify the user was updated in the database
+        $updatedUser = $this->entityManager->getRepository(User::class)->find($user->getId());
+        $this->assertNotNull($updatedUser);
+
+        $this->entityManager->refresh($updatedUser);
+
+        $this->assertEquals('Jane', $updatedUser->getFirstName());
+        $this->assertEquals('Smith', $updatedUser->getLastName());
+        $this->assertEquals('jane.smith@example.com', $updatedUser->getEmail());
+    }
 
     protected function tearDown(): void
     {
