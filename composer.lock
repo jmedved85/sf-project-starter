@@ -3392,16 +3392,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v2.4.7",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "92f4fba342161ff36072bd3b8e0b3c6c23160402"
+                "reference": "8ce1acd9842abe0e9b4c4a0bd3f259859516c018"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/92f4fba342161ff36072bd3b8e0b3c6c23160402",
-                "reference": "92f4fba342161ff36072bd3b8e0b3c6c23160402",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/8ce1acd9842abe0e9b4c4a0bd3f259859516c018",
+                "reference": "8ce1acd9842abe0e9b4c4a0bd3f259859516c018",
                 "shasum": ""
             },
             "require": {
@@ -3440,7 +3440,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v2.4.7"
+                "source": "https://github.com/symfony/flex/tree/v2.5.0"
             },
             "funding": [
                 {
@@ -3456,7 +3456,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-07T08:51:54+00:00"
+            "time": "2025-03-03T07:50:46+00:00"
         },
         {
             "name": "symfony/form",
@@ -7936,16 +7936,16 @@
         },
         {
             "name": "php-cs-fixer/shim",
-            "version": "v3.70.0",
+            "version": "v3.70.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/shim.git",
-                "reference": "9302388f32d5181cd7238717860391396c592f36"
+                "reference": "ff041542719ad3be54bd34647d0fd5bc7900115e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/shim/zipball/9302388f32d5181cd7238717860391396c592f36",
-                "reference": "9302388f32d5181cd7238717860391396c592f36",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/shim/zipball/ff041542719ad3be54bd34647d0fd5bc7900115e",
+                "reference": "ff041542719ad3be54bd34647d0fd5bc7900115e",
                 "shasum": ""
             },
             "require": {
@@ -7982,9 +7982,9 @@
             "description": "A tool to automatically fix PHP code style",
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/shim/issues",
-                "source": "https://github.com/PHP-CS-Fixer/shim/tree/v3.70.0"
+                "source": "https://github.com/PHP-CS-Fixer/shim/tree/v3.70.2"
             },
-            "time": "2025-02-22T23:31:12+00:00"
+            "time": "2025-03-03T21:07:46+00:00"
         },
         {
             "name": "phpstan/extension-installer",
