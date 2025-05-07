@@ -12,13 +12,38 @@
 
                 {{ form_errors(registrationForm) }}
 
-                {{ form_row(registrationForm.firstName) }}
-                {{ form_row(registrationForm.lastName) }}
-                {{ form_row(registrationForm.email) }}
-                {{ form_row(registrationForm.plainPassword) }}
-                {{ form_row(registrationForm.roles) }}
+                <div class="form-floating mb-3">
+                    {{ form_widget(registrationForm.firstName, { 'attr': { 'placeholder': 'first_name'|trans } }) }}
+                    <label for="{{ registrationForm.firstName.vars.id }}">{{ 'first_name'|trans }}</label>
+                </div>
 
-                <button type="submit" id="register" class="btn btn btn-primary">
+                <div class="form-floating mb-3">
+                    {{ form_widget(registrationForm.lastName, { 'attr': { 'placeholder': 'last_name'|trans } }) }}
+                    <label for="{{ registrationForm.lastName.vars.id }}">{{ 'last_name'|trans }}</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    {{ form_widget(registrationForm.email, { 'attr': { 'placeholder': 'email'|trans } }) }}
+                    <label for="{{ registrationForm.email.vars.id }}">{{ 'email'|trans }}</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    {{ form_widget(registrationForm.plainPassword, { 'attr': { 'placeholder': 'password'|trans } }) }}
+                    <label for="{{ registrationForm.plainPassword.vars.id }}">{{ 'password'|trans }}</label>
+                </div>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="form-group">
+                        <label class="form-label">{{ 'user_type'|trans }}</label>
+                        {% for choice in registrationForm.roleSelection %}
+                            <div class="form-check">
+                                {{ form_widget(choice, { 'attr': { 'class': 'form-check-input' } }) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <button type="submit" id="register" class="btn btn btn-primary mt-3">
                     {{ isEdit ? 'save'|trans : 'register'|trans }}
                 </button>
 

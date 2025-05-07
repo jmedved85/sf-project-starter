@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\User;
@@ -26,7 +28,9 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $minChars = 8;
-        $isEdit = $options['is_edit'] ?? false;
+        $isEdit = $options['isEdit'] ?? false;
+        $currentUser = $options['currentUser'] ?? null;
+        $currentRole = $options['currentRole'] ?? null;
 
         $builder
             ->add('firstName', TextType::class, [
@@ -59,15 +63,23 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('roles', ChoiceType::class, [
-                'label' => $this->translator->trans('user_type'),
-                'choices' => [
-                    'Administrator' => 'ROLE_ADMIN',
-                    'User' => 'ROLE_USER',
-                ],
-                'multiple' => true,
-                'expanded' => false,
-            ]);
+        ;
+
+        if ($currentUser) {
+            if (in_array('ROLE_ADMIN', $currentUser->getRoles(), true)) {
+                $builder->add('roleSelection', ChoiceType::class, [
+                    'label' => $this->translator->trans('user_type'),
+                    'choices' => [
+                        'Administrator' => 'ROLE_ADMIN',
+                        'User' => 'ROLE_USER',
+                    ],
+                    'multiple' => false,
+                    'expanded' => true,
+                    'mapped' => false,
+                    'data' => $currentRole ? $currentRole : 'ROLE_USER',
+                ]);
+            }
+        }
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
@@ -85,7 +97,9 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'is_edit' => false,
+            'isEdit' => false,
+            'currentUser' => null,
+            'currentRole' => null,
         ]);
     }
 }

@@ -2,18 +2,19 @@
 
 namespace App\Tests\Controller;
 
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase
 {
-    private $client;
+    private KernelBrowser $client;
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
     }
 
-    public function testLogin()
+    public function testLogin(): void
     {
         $crawler = $this->client->request('GET', '/login');
 
@@ -22,7 +23,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSelectorExists('form#login-form');
     }
 
-    public function testLoginWithError()
+    public function testLoginWithError(): void
     {
         $crawler = $this->client->request('GET', '/login');
 
@@ -39,7 +40,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSelectorExists('.alert-danger');
     }
 
-    public function testLoginWithCorrectCredentials()
+    public function testLoginWithCorrectCredentials(): void
     {
         $crawler = $this->client->request('GET', '/login');
 
@@ -57,7 +58,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSelectorExists('a[href="/logout"]'); // Ensure the logout link is present
     }
 
-    public function testLogout()
+    public function testLogout(): void
     {
         $this->client->request('GET', '/logout');
 

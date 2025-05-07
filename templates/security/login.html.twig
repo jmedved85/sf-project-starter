@@ -5,7 +5,7 @@
 {% block content %}
     <div id="login-template" class="d-flex justify-content-center align-items-center">
         <div class="col-md-6 col-lg-4">
-        <img src="{{ asset('images/logo.png') }}" alt="logo" class="img-fluid rounded mx-auto d-block mb-4 logo">
+            <img src="{{ asset('images/logo.png') }}" alt="logo" class="img-fluid rounded mx-auto d-block mb-4 logo">
 
             <h1 class="display-6 text-center mb-5">{{ 'app_title'|trans }}</h1>
             <form id="login-form" action="{{ path('app_login') }}" method="post" class="card p-4 shadow-sm">
@@ -32,28 +32,30 @@
 
                 <h1 class="h4 mb-3 font-weight-normal text-center">{{ 'sign_in_please'|trans }}</h1>
 
-                <div class="form-group mb-3">
-                    <label for="username">{{ 'email'|trans }}</label>
+                <div class="form-floating mb-3">
                     <input type="email" 
                         id="username" 
                         name="_username" 
                         value="{{ last_username }}" 
                         class="form-control" 
+                        placeholder="{{ 'email'|trans }}"
                         autocomplete="email" 
                         required 
                         autofocus
                     >
+                    <label for="username">{{ 'email'|trans }}</label>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="password">{{ 'password'|trans }}</label>
+                <div class="form-floating mb-3">
                     <input type="password" 
                         id="password" 
                         name="_password" 
                         class="form-control" 
+                        placeholder="{{ 'password'|trans }}"
                         autocomplete="current-password" 
                         required
                     >
+                    <label for="password">{{ 'password'|trans }}</label>
                 </div>
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -70,6 +72,10 @@
                     {{ 'sign_in'|trans }}
                 </button>
             </form>
+
+            <br>
+
+            <div class="text-center">Back to <a href="{{ path('app_home') }}">{{ 'home'|trans }}</a></div>
         </div>
     </div>
 {% endblock %}

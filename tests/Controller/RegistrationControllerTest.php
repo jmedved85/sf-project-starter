@@ -4,12 +4,13 @@ namespace App\Tests\Controller;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RegistrationControllerTest extends WebTestCase
 {
     private EntityManagerInterface $entityManager;
-    private $client;
+    private KernelBrowser $client;
 
     protected function setUp(): void
     {
@@ -17,11 +18,11 @@ class RegistrationControllerTest extends WebTestCase
         $this->entityManager = $this->client->getContainer()->get('doctrine')->getManager();
     }
 
-    private function logIn()
+    private function logIn(): void
     {
         $crawler = $this->client->request('GET', '/login');
 
-        $form = $crawler->selectButton('Sign in')->form([
+        $form = $crawler->selectButton('Sign In')->form([
             '_username' => 'admin@net.com',
             '_password' => 'admin1234',
         ]);
@@ -30,7 +31,7 @@ class RegistrationControllerTest extends WebTestCase
         $this->client->followRedirect();
     }
 
-    public function testRegisterUser()
+    public function testRegisterUser(): void
     {
         $this->logIn();
 
@@ -39,12 +40,12 @@ class RegistrationControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('form#register-form');
 
-        $form = $crawler->selectButton('register')->form([
+        $form = $crawler->selectButton('Register')->form([
             'registration_form[firstName]' => 'John',
             'registration_form[lastName]' => 'Doe',
             'registration_form[email]' => 'john.doe@example.com',
             'registration_form[plainPassword]' => 'password123',
-            'registration_form[roles]' => ['ROLE_USER'],
+            'registration_form[roleSelection]' => 'ROLE_USER',
         ]);
 
         $this->client->submit($form);
@@ -62,7 +63,7 @@ class RegistrationControllerTest extends WebTestCase
         $this->assertEquals('Doe', $user->getLastName());
     }
 
-    public function testEditUser()
+    public function testEditUser(): void
     {
         $this->logIn();
 
