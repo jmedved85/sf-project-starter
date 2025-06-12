@@ -16,6 +16,9 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
+    'cookie_consent' => [
+        'path' => './assets/cookie_consent.js',
+    ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],

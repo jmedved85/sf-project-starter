@@ -34,21 +34,23 @@
                         </li>
                     {% endif %}
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle logout-username-text"
-                            href="#"
-                            id="userDropdown"
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            {{ app.user.userIdentifier }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li>
-                                <a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'logout'|trans }}</a>
-                            </li>
-                        </ul>
+                    {% if is_granted('ROLE_USER') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle logout-username-text"
+                                href="#"
+                                id="userDropdown"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                {{ app.user.userIdentifier }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'logout'|trans }}</a>
+                                </li>
+                            </ul>
+                    {% endif %}
                     </li>
                 </ul>
             </div>

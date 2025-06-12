@@ -1,0 +1,63 @@
+{# Cookie Consent Banner on bottom of the page #}
+<div id="cookie-consent-banner"
+    class="position-fixed bottom-0 start-0 end-0 p-3 bg-light border-top small"
+    style="z-index: 1050; display: none;"
+>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h6>{{ 'cookie_consent_header'|trans }}</h6>
+                <p class="mb-md-0">
+                    {{ 'cookie_consent.message'|trans({
+                        '%privacy_link_start%': '<a href="' ~ path('app_privacy') ~ '">',
+                        '%privacy_link_end%': '</a>'
+                    })|raw }}
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                <button id="cookie-accept-all" class="btn btn-sm btn-primary me-2">{{ 'accept_all'|trans }}</button>
+                <button id="cookie-accept-necessary" class="btn btn-sm btn-outline-secondary me-2">{{ 'only_necessary'|trans }}</button>
+                <button id="cookie-settings" class="btn btn-sm btn-link">{{ 'manage_settings'|trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Cookie Settings Modal #}
+<div class="modal fade" id="cookieSettingsModal" tabindex="-1" aria-labelledby="cookieSettingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cookieSettingsModalLabel">{{ 'cookie_consent.modal.title'|trans }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="necessaryCookies" checked disabled>
+                    <label class="form-check-label fw-bold" for="necessaryCookies">
+                        {{ 'cookie_consent.modal.necessary_title'|trans }}
+                    </label>
+                    <p class="text-muted small">{{ 'cookie_consent.modal.necessary_description'|trans }}</p>
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="analyticsCookies">
+                    <label class="form-check-label fw-bold" for="analyticsCookies">
+                        {{ 'cookie_consent.modal.analytics_title'|trans }}
+                    </label>
+                    <p class="text-muted small">{{ 'cookie_consent.modal.analytics_description'|trans }}</p>
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="marketingCookies">
+                    <label class="form-check-label fw-bold" for="marketingCookies">
+                        {{ 'cookie_consent.modal.marketing_title'|trans }}
+                    </label>
+                    <p class="text-muted small">{{ 'cookie_consent.modal.marketing_description'|trans }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'cancel'|trans }}</button>
+                <button type="button" class="btn btn-primary" id="saveCookieSettings">{{ 'save_settings'|trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>
