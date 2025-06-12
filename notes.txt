@@ -236,6 +236,18 @@ TESTS
 - docker env
 docker compose exec php ./vendor/bin/phpunit
 
+-------------
+DEPLOY SCRIPT
+-------------
+- change scripts command in composer.json
+
+"scripts": {
+    "post-install-cmd": [],
+    "post-update-cmd": []
+},
+
+- sh deploy.sh
+
 
 --------------
 APP PRODUCTION
