@@ -1,5 +1,5 @@
 #!/bin/bash
 
-# chmod +x migrate-migrations.sh
+# chmod +x migrations-migrate.sh
 
 docker compose exec php bin/console doctrine:migrations:migrate

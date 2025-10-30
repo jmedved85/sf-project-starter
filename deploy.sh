@@ -1,4 +1,3 @@
-# This script automates the deployment process for a web application hosted on Hostinger.
 #!/bin/bash
 set -e # Exit immediately if a command fails
 
@@ -30,7 +29,30 @@ echo
 echo "5. Running database migrations..."
 
 if [ -d migrations ] && [ "$(ls -A migrations)" ]; then
-    php bin/console doctrine:migrations:migrate --env=prod --no-interaction || echo "⚠️ Migration warning - check database manually"
+    # Create database backup before migrations
+    # echo "   - Creating database backup..."
+    # TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+    # BACKUP_FILE="db_backup_${TIMESTAMP}.sql"
+    # php bin/console doctrine:database:export --env=prod > "backups/${BACKUP_FILE}" || { 
+    #     echo "❌ Failed to create database backup. Aborting migrations for safety."
+    #     exit 1
+    # }
+    
+    # Run migrations
+    echo "   - Running migrations..."
+    php bin/console doctrine:migrations:migrate --env=prod --no-interaction || {
+        echo "❌ Migration failed! Restoring from backup..."
+        php bin/console doctrine:database:import --env=prod "backups/${BACKUP_FILE}"
+        echo "Database restored from backup. Please check migration files."
+        exit 1
+    }
+    
+    # Verify database integrity
+    echo "   - Verifying database..."
+    php bin/console doctrine:schema:validate --env=prod || {
+        echo "⚠️ Database schema validation failed after migration."
+        echo "Please check database structure manually."
+    }
 fi
 
 echo
