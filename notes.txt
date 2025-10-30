@@ -81,7 +81,7 @@ vendor/bin/doctrine orm:schema-tool:update --force
 --------
 SECURITY
 --------
-https://symfony.com/doc/6.4/security.html
+https://symfony.com/doc/7.4/security.html
 
 php bin/console make:user
 docker compose exec php bin/console make:user
