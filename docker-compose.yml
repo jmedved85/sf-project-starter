@@ -45,6 +45,26 @@ services:
     depends_on:
       - php
 
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin-sf_project_starter
+    restart: unless-stopped
+    ports:
+      - "8090:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: pass1234
+      UPLOAD_LIMIT: 512M
+      MEMORY_LIMIT: 512M
+      MAX_EXECUTION_TIME: 600
+    volumes:
+      - phpmyadmin-config:/etc/phpmyadmin/config.user.inc.php
+    depends_on:
+      - mysql
+
   # mailpit - mail testing service
   # mailpit:
   #   image: axllent/mailpit
@@ -63,3 +83,4 @@ services:
 
 volumes:
   mysql-data:
+  phpmyadmin-config:
