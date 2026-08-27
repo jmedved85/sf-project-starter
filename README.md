@@ -14,90 +14,53 @@ This open-source project is intended for use in the development of my full-stack
 
 ## Requirements
 
-- PHP 8.2 or higher
+- PHP 8.4 or higher
 - Composer
 - Symfony CLI
 - MySQL
 - Docker and Docker Compose
 
-## Prerequisites
+Use the setup script for the fastest installation:
 
-Ensure you have the following installed on your machine:
+```bash
+chmod +x setup.sh
+sh setup.sh
+```
 
-- Docker
-- Docker Compose
-- Composer
+The script will:
 
-## Docker Installation
+- create `.env.local` if it does not exist
+- build and start the Docker containers
+- install Composer dependencies
+- clear cache and compile the asset map
+- create the database if needed
+- run Doctrine migrations
+- load development fixtures
+- install importmap assets
+- run the same quality checks as `qa.sh`
 
-- Check `docker/docker-notes.txt` file for more info
+Check `docker/docker-notes.txt` file for more info.
 
-1. Build and start the containers:
+If you prefer to install manually, follow the Docker steps in `setup.sh`.
 
-    ```bash
-    docker compose up -d --build
-    ```
+## Default User
 
-2. Install dependencies:
+- username: user@net.com
+- password: user1234
 
-    ```bash
-    docker compose exec php composer install
-    ```
-
-3. Create a `.env.local` file and configure your database connection:
-
-    ```dotenv
-    DATABASE_URL=mysql://root:pass1234@mariadb-sf_project_starter:3306/sf-project-starter_dev
-    APP_ENV=dev
-    APP_DEBUG=true
-    ```
-
-4. Create the database and run migrations:
-
-    ```bash
-    docker compose exec php php bin/console doctrine:database:create
-    docker compose exec php php bin/console doctrine:migrations:migrate
-    ```
-
-5. Insert dev users and load fixtures:
-    These demo users are created through fixtures and their passwords are hashed automatically.
-
-    ```bash
-    docker compose exec php php bin/console doctrine:fixtures:load --no-interaction
-    ```
-
-    ```bash
-    DEFAULT ADMIN USER
-    username: admin@net.com
-    password: admin1234
-    ```
-
-    ```bash
-    DEFAULT USER
-    username: user@net.com
-    password: user1234
-    ```
-
-6. Install importmap:
-
-    ```bash
-    docker compose exec php php bin/console importmap:install
-    ```
-
-
-7. Run quality assurance checks:
+Run quality assurance checks:
 
     ```bash
     sh qa.sh
     ```
 
-8. Start the Symfony server:
+Start the Symfony server:
 
     ```bash
     sh up.sh
     ```
 
-9. Open your browser and navigate to `http://localhost:8080` or `http://localhost:8080/login`.
+Open your browser and navigate to `http://localhost:8080` or `http://localhost:8080/login`.
 
 ## Running Tests
 
