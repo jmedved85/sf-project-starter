@@ -1,33 +1,39 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.4-fpm-bookworm
+
+# Install Composer in the PHP image so dependency management works inside the container.
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 # Useful PHP extension installer image, copy binary into your container
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-# Install dependencies
-RUN apk add --no-cache \
+# Install runtime and development utilities.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
         acl \
         bash \
-        fcgi \
+        ca-certificates \
+        curl \
+        libfcgi-bin \
         file \
+        fontconfig \
+        fonts-dejavu \
         gettext \
         git \
-        libstdc++ \
-        libx11 \
-        libxrender \
-        libxext \
+        libgmp10 \
+        libjpeg62-turbo \
+        libpng16-16 \
         libssl3 \
-        ca-certificates \
-        fontconfig \
-        freetype \
-        ttf-dejavu \
-        wget \
-        tar \
-        gmp \
-        libjpeg-turbo \
-        libpng \
-        zlib \
+        libstdc++6 \
+        libx11-6 \
+        libxext6 \
+        libxrender1 \
         nano \
-        sudo
+        sudo \
+        tar \
+        wget \
+        wkhtmltopdf \
+        zlib1g \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN set -eux; \
@@ -48,33 +54,23 @@ RUN set -eux; \
         pcntl \
         xml \
         xmlwriter \
-        simplexml \
-        curl \
-        fileinfo \
-        iconv \
-        tokenizer \
-        ctype \
-        session \
-        redis
+        simplexml
 
 # Copy custom php.ini
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 
-# Install Xdebug and copy configuration
-RUN set -eux; \
-	install-php-extensions xdebug
-COPY ./docker/php/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+# Set www-data UID/GID to match host user
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+RUN usermod -u ${USER_ID} www-data && \
+    groupmod -g ${GROUP_ID} www-data
 
-# Set permissions for the uploads directory
-RUN mkdir -p /var/www/html/public/uploads/documents && \
-    chown -R www-data:www-data /var/www/html/public/uploads/documents && \
-    chmod -R 777 /var/www/html/public/uploads/documents
-
-# Install composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Set composer to use system PHP
-ENV COMPOSER_ALLOW_SUPERUSER=1
+# Copy entrypoint script
+COPY ./docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set working directory
 WORKDIR /var/www/html
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["php-fpm"]

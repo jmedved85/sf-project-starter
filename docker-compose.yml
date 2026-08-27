@@ -1,17 +1,28 @@
 services:
   # database
-  mysql:
-    image: mysql:8.0.39-debian
-    container_name: mysql-sf_project_starter
+  mariadb:
+    image: mariadb:lts
+    container_name: mariadb-sf_project_starter
     environment:
-      MYSQL_ROOT_PASSWORD: pass1234
-      # MYSQL_USER: root
+      MARIADB_ROOT_PASSWORD: pass1234
+      # MARIADB_USER: root
     ports:
       - "3308:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mariadb-sf_project_starter:/var/lib/mysql
+      - ./docker/mariadb-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  # mysql:
+  #   image: mysql:8.0.39-debian
+  #   container_name: mysql-sf_project_starter
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: pass1234
+  #     # MYSQL_USER: root
+  #   ports:
+  #     - "3308:3306"
+  #   volumes:
+  #     - mysql-sf_project_starter:/var/lib/mysql
 
-  # php
   php:
     build:
       context: .
@@ -29,7 +40,7 @@ services:
       - ./:/var/www/html
       - ./public/uploads:/var/www/html/public/uploads
     depends_on:
-      - mysql
+      - mariadb
 
   # nginx
   nginx:
@@ -53,7 +64,7 @@ services:
     ports:
       - "8090:80"
     environment:
-      PMA_HOST: mysql
+      PMA_HOST: mariadb-sf_project_starter
       PMA_PORT: 3306
       PMA_USER: root
       PMA_PASSWORD: pass1234
@@ -63,7 +74,7 @@ services:
     volumes:
       - phpmyadmin-config:/etc/phpmyadmin/config.user.inc.php
     depends_on:
-      - mysql
+      - mariadb
 
   # mailpit - mail testing service
   # mailpit:
@@ -82,5 +93,6 @@ services:
   #     MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
 volumes:
-  mysql-data:
+  mariadb-sf_project_starter:
+  # mysql-sf_project_starter:
   phpmyadmin-config:

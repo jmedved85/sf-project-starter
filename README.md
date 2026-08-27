@@ -38,32 +38,38 @@ Ensure you have the following installed on your machine:
     docker compose up -d --build
     ```
 
-2. Create a `.env.local` file and configure your database connection:
+2. Install dependencies:
+
+    ```bash
+    docker compose exec php composer install
+    ```
+
+3. Create a `.env.local` file and configure your database connection:
 
     ```dotenv
-    DATABASE_URL=mysql://root:pass1234@mysql-sf_project_starter:3306/sf-project-starter_dev
+    DATABASE_URL=mysql://root:pass1234@mariadb-sf_project_starter:3306/sf-project-starter_dev
     APP_ENV=dev
     APP_DEBUG=true
     ```
 
-3. Create the database and run migrations:
+4. Create the database and run migrations:
 
     ```bash
     docker compose exec php php bin/console doctrine:database:create
     docker compose exec php php bin/console doctrine:migrations:migrate
     ```
 
-4. Insert dev users:
-    These are just example credentials and passwords are hashed using `bin/console security:hash-password` command.
+5. Insert dev users and load fixtures:
+    These demo users are created through fixtures and their passwords are hashed automatically.
+
+    ```bash
+    docker compose exec php php bin/console doctrine:fixtures:load --no-interaction
+    ```
 
     ```bash
     DEFAULT ADMIN USER
     username: admin@net.com
     password: admin1234
-    ```
-
-    ```sql
-    INSERT INTO `sf-project-starter_dev`.`user` (`id`, `email`, `user_name`, `password`, `roles`, `first_name`, `last_name`, `active`) VALUES (1, 'admin@net.com', 'admin', '$2y$13$woWveCWpnhEiWPirdbvZu.nBRaKujD07uaFiJhkI/eEtQs5z9S36e', '["ROLE_ADMIN"]', 'Admin', 'User', 1);
     ```
 
     ```bash
@@ -72,36 +78,38 @@ Ensure you have the following installed on your machine:
     password: user1234
     ```
 
-    ```sql
-    INSERT INTO `sf-project-starter_dev`.`user` (`id`, `email`, `user_name`, `password`, `roles`, `first_name`, `last_name`, `active`) VALUES (2, 'user@net.com', 'user', '$2y$13$Yfbvi3rzhcRV4Y3Adw4q3ekiq4R01p0n.tEIpwK7ls7bdVivmHu4e', '["ROLE_USER"]', 'Joe', 'Doe', 1);
+6. Install importmap:
+
+    ```bash
+    docker compose exec php php bin/console importmap:install
     ```
 
-5. Start the Docker containers:
+
+7. Run quality assurance checks:
+
+    ```bash
+    sh qa.sh
+    ```
+
+8. Start the Symfony server:
 
     ```bash
     sh up.sh
     ```
 
-6. Run:
-
-    ```bash
-    composer install
-    sh asset-map-compile.sh
-    ```
-
-7. Open your browser and navigate to `http://localhost:8090` or `http://localhost:8090/login`.
+9. Open your browser and navigate to `http://localhost:8080` or `http://localhost:8080/login`.
 
 ## Running Tests
 
 To run the tests, use the following command:
 
     ```bash
-    ./vendor/bin/phpunit
+    sh test.sh
     ```
 
 ## Notes
 
-For more instructions check additional notes in `notes.txt` text file.
+For more instructions check additional notes in `docker/docker-notes.txt` text file.
 
 ## License
 

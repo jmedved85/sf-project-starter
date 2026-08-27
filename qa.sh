@@ -4,11 +4,15 @@
 
 set -e
 
+public_assets_dir="public/assets"
+
 # 1. Clearing cache and compiling assets
 echo " "
 echo "Clearing cache and compiling assets..."
 echo " "
 docker compose exec php bin/console cache:clear
+
+rm -rf "$public_assets_dir"
 docker compose exec php bin/console asset-map:compile
 
 # 2. Fast syntax checks (fail-fast)
@@ -41,8 +45,9 @@ docker compose exec php ./vendor/bin/phpstan analyze --memory-limit=1G
 echo " "
 echo "Running security checks..."
 echo " "
-composer audit
-symfony check:security
+docker compose exec php composer audit
+# Note: symfony CLI check:security requires symfony CLI installed in container
+# docker compose exec php symfony check:security
 
 # 7. Tests
 # echo " "

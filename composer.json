@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^3",
@@ -98,10 +98,11 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.6",
         "php-cs-fixer/shim": "^3.69",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^1.12",
-        "phpstan/phpstan-doctrine": "^1.5",
+        "phpstan/phpstan": "^2.2",
+        "phpstan/phpstan-doctrine": "^2.0",
         "phpunit/phpunit": "^9.5",
         "squizlabs/php_codesniffer": "^3.10",
         "symfony/browser-kit": "7.4.*",
