@@ -17,7 +17,7 @@ This open-source project is intended for use in the development of my full-stack
 - PHP 8.4 or higher
 - Composer
 - Symfony CLI
-- MySQL
+- MySQL/MariaDB
 - Docker and Docker Compose
 
 Use the setup script for the fastest installation:
@@ -37,7 +37,6 @@ The script will:
 - run Doctrine migrations
 - load development fixtures
 - install importmap assets
-- run the same quality checks as `qa.sh`
 
 Check `docker/docker-notes.txt` file for more info.
 

@@ -12,6 +12,7 @@ services:
       - mariadb-sf_project_starter:/var/lib/mysql
       - ./docker/mariadb-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
   # mysql:
   #   image: mysql:8.0.39-debian
   #   container_name: mysql-sf_project_starter
@@ -77,20 +78,20 @@ services:
       - mariadb
 
   # mailpit - mail testing service
-  # mailpit:
-  #   image: axllent/mailpit
-  #   container_name: mailpit-sf_project_starter
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./data:/data
-  #   ports:
-  #     - 8025:8025
-  #     - 1025:1025
-  #   environment:
-  #     MP_MAX_MESSAGES: 5000
-  #     MP_DATABASE: /data/mailpit.db
-  #     MP_SMTP_AUTH_ACCEPT_ANY: 1
-  #     MP_SMTP_AUTH_ALLOW_INSECURE: 1
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit-sf_project_starter
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    ports:
+      - 8025:8025
+      - 1025:1025
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
 volumes:
   mariadb-sf_project_starter:
